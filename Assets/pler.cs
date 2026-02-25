@@ -5,9 +5,7 @@ public class pler : MonoBehaviour
 {
     private Rigidbody2D rb;
     private float speed = 5f;
-    public float jumpStrength = 15f;
-
-
+    private float jumpStrength = 10f;
     private bool isGrounded;
 
 

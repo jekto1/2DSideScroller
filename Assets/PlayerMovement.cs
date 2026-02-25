@@ -1,32 +1,86 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f; // Adjustable speed in the Inspector
+    public float moveSpeed = 5f; 
     private Rigidbody2D rb;
     private Vector2 movement;
+    private float jumpStrength = 6f;
+    public bool isGrounded;
 
-    // Start is called before the first frame update
+    public bool isDead;
+
+    public float dashCD;
+    public float jumpTimer = 0f;
+    private float facingDirection = 1f;
+
+
+
     void Start()
     {
-        // Get the Rigidbody2D component attached to the GameObject
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame to capture input
+   
     void Update()
     {
-        // Get input for the horizontal axis (A/D keys or Left/Right arrows by default)
         movement.x = Input.GetAxisRaw("Horizontal");
-        // For simple top-down movement, you might use the vertical axis here too
-        // movement.y = Input.GetAxisRaw("Vertical"); 
+        if (movement.x != 0)
+        {
+            facingDirection = Mathf.Sign(movement.x);
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && jumpTimer > 0)
+        {
+            var y = new Vector2(0f, jumpStrength);
+            rb.AddForce(y, ForceMode2D.Impulse);
+            isGrounded = false;
+        }
+        if (isDead)
+        {
+            Time.timeScale = 0;
+            transform.eulerAngles = new Vector3(0, 0, 90);
+        }
     }
 
-    // FixedUpdate is called at a fixed interval and is ideal for physics operations
     void FixedUpdate()
     {
-        // Apply movement to the Rigidbody2D's velocity
-        // The y velocity is maintained for effects like gravity or jumping
         rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y);
+        if (dashCD > 0)
+        {
+            dashCD -= Time.deltaTime;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashCD < 1)
+        {
+            rb.AddForce(Vector2.right * facingDirection * 100, ForceMode2D.Impulse);
+            dashCD = 3;
+        }
+        if (isGrounded == true)
+        {
+            jumpTimer = 0.1f;
+        }
+        else if (isGrounded == false)
+        {
+            jumpTimer -= Time.deltaTime;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            isGrounded = true;
+        }
+        if (collision.gameObject.tag == "Spikes")
+        {
+            isDead = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            isGrounded = false;
+        }
     }
 }
