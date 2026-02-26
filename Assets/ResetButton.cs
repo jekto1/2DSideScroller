@@ -8,5 +8,6 @@ public class ResetButton : MonoBehaviour
         Time.timeScale = 1f;
         Vector3 targetPosition = new Vector3(-7.77f, -0.02f, 0f);
         target.position = targetPosition;
+        target.transform.eulerAngles = new Vector3(0, 0, 0);
     }
 }
