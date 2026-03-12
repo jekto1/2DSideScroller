@@ -1,27 +1,31 @@
+using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class HorizontalMovement : MonoBehaviour
 {
-    static float t = 0.0f;
-    [Header("Movement Settings")]
-    public float distance, speed;
-    private float originalPos;
-    void Start()
+    public float speed = 5f;
+    private Rigidbody2D rb;
+    public Transform wallDetector;
+    public LayerMask wallLayer;
+    private bool movingRight = true;
+
+    private void Start()
     {
-        originalPos = transform.position.x;
+        rb = GetComponent<Rigidbody2D>();
+    }
+    void FixedUpdate()
+    {
+        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        RaycastHit2D wallInfo = Physics2D.Raycast(wallDetector.position, transform.right, 0.2f, wallLayer);
+        if (wallInfo.collider != null)
+        {
+            movingRight = !movingRight;
+            transform.eulerAngles = new Vector3(0, movingRight ? 0 : 180, 0);
+        }
     }
 
-    void Update()
-    {
-        Movement();
-    }
 
-    private void Movement()
-    {
-        t += Time.deltaTime;
-        var x = originalPos + Mathf.Sin(t) * distance;
-        //rb.linearVelocity = new Vector2(x * speed, 0f);
-        transform.position = new Vector2(x, transform.position.y);
-    }
+
 }
 
