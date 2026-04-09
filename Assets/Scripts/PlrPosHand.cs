@@ -19,11 +19,11 @@ public class PlayerPositionHandler : MonoBehaviour
         ChangePlayerPosition(currentCheckpointPosition);
     }
 
-    //public void OnFinish()
-    //{
-    //    GameManager.instance.ChangeLevel(1);
-    //    GameManager.instance.ChangeScene(0);
-    //}
+    public void OnFinish()
+    {
+        GameManager.Instance.ChangeLevel(1);
+        GameManager.Instance.ChangeScene(0);
+    }
     #endregion
 
     #region SaveLoad
