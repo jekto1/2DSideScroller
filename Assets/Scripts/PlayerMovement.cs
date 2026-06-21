@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpStrength = 6f;
     public float dashForce = 12f;
     public float dashCooldown = 1f;
-    public float dashDuration = 0.2f; // how long dash lasts
+    public float dashDuration = 0.2f; 
 
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -72,16 +72,16 @@ public class PlayerMovement : MonoBehaviour
     private void StartDash()
     {
         isDashing = true;
-        rb.linearVelocity = new Vector2(facingDirection * dashForce, 0f); // forceful dash
+        rb.linearVelocity = new Vector2(facingDirection * dashForce, 0f); 
         rb.gravityScale = 0f;
         dashTimer = dashCooldown;
-        Invoke(nameof(EndDash), dashDuration); // end dash after short time
+        Invoke(nameof(EndDash), dashDuration); 
     }
 
     private void EndDash()
     {
         isDashing = false;
-        rb.gravityScale = 1f;
+        rb.gravityScale = 1.5f;
     }
 
     public float GetHorizontalSpeed() { return rb.linearVelocity.x; }
