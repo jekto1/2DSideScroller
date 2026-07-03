@@ -42,7 +42,6 @@ public class UIMenu : MonoBehaviour
 
 
     #region Panel Management
-    //Region ini mengatur agar start panel tidak muncul 2x
     [Header("Panel Start")]
     public GameObject startPanel;
     [Header("Panel Level")]

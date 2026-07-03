@@ -28,10 +28,6 @@ public class PlayerPositionHandler : MonoBehaviour
 
     #region SaveLoad
     public PlayerPos playerPostitionData;
-    private void LoadPosition()
-    {
-        transform.position = playerPostitionData.position;
-    }
 
     private void SavePosition(Vector2 newPosition)
     {
